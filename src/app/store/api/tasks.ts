@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { type IDeleteTaskResponce, type ITask, type UpdateTaskPayload, type WorkflowCode } from "../../../interfaces";
 
-const baseUrl = "http://localhost:3001";
+const baseUrl = "http://localhost:3000/api/v1/tasks";
 
 export const tasksApi = createApi({
   reducerPath: "tasksApi",
