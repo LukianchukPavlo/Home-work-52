@@ -7,6 +7,7 @@ export const tasksApi = createApi({
   reducerPath: "tasksApi",
   baseQuery: fetchBaseQuery({
     baseUrl,
+    credentials: 'include'
   }),
   tagTypes: ["Tasks"],
   endpoints: (build) => ({
