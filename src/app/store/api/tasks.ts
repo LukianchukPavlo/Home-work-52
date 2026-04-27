@@ -1,65 +1,80 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { type IDeleteTaskResponce, type ITask, type UpdateTaskPayload, type WorkflowCode } from "../../../interfaces";
+import { type IDeleteTaskResponce, type ITask, type WorkflowCode } from "../../../interfaces";
 
 const baseUrl = "http://localhost:3000/api/v1/tasks";
 
+const apiName = 'taskApi'
+
 export const tasksApi = createApi({
-  reducerPath: "tasksApi",
+  reducerPath: apiName,
   baseQuery: fetchBaseQuery({
     baseUrl,
     credentials: 'include'
   }),
-  tagTypes: ["Tasks"],
+  tagTypes: ["Tasks", "Task"],
   endpoints: (build) => ({
     
     getTasks: build.query<ITask[], string>({
       query: (boardId) => ({
-        url: "tasks",
+        url: "/",
         params: { boardId },
       }),
-      providesTags: ["Tasks"],
+      transformResponse: (response: any) => {
+        return response?.data || response;
+      },
+      providesTags: ["Tasks"] ,
     }),
 
-    updateTask: build.mutation<ITask, UpdateTaskPayload>({
+    getTask: build.query<ITask, string>({
+      query: (taskId) => `/${taskId}`,
+      transformResponse: (response: any) => {
+        return response?.data || response;
+      },
+      providesTags: ["Task"],
+    }),
+    
+    updateTask: build.mutation<ITask, {taskId: string; body: { title?: string; description?: string };}>({
       query: ({ taskId, body }) => ({
-        url: `tasks/${taskId}`,
-        method: "PATCH", 
+        url: `/${taskId}`,
+        method: "PUT", 
         body,
       }),
-      invalidatesTags: ["Tasks"],
+      invalidatesTags: ["Tasks", "Task"],
     }),
+
+    updateTaskWorkflow: build.mutation<ITask,{ taskId: string; workflow: WorkflowCode }>({
+      query: ({ taskId, workflow }) => ({
+        url: `/${taskId}/workflow`,
+        method: "PUT",
+        body: { workflow },
+      }),
+      invalidatesTags: ["Tasks", "Task"],
+    }),
+
+    
 
     deleteTask: build.mutation<IDeleteTaskResponce, string>({
       query: (taskId) => ({
-        url: `tasks/${taskId}`, 
+        url: `/${taskId}`, 
         method: "DELETE",
       }),
-      async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        try {
-            await queryFulfilled;
-            dispatch(tasksApi.util.invalidateTags(["Tasks"]))
-        } catch {
-
-        }
-      }
+      invalidatesTags: ["Tasks"],
     }),
     createTask: build.mutation<ITask, { boardId: string; title: string; description?: string; workflow?: { code: WorkflowCode } }>({
         query: ({ boardId, ...body }) => ({
-            url: "tasks",
+            url: "/",
             method: "POST",
             body: { boardId, ...body },
         }),
         invalidatesTags: ["Tasks"],
-    }),
-    updateTaskContent: build.mutation<ITask,{ taskId: string; body: { title?: string; description?: string } }>({
-        query: ({ taskId, body }) => ({
-            url: `tasks/${taskId}`, 
-            method: "PATCH",
-            body,
-        }),
-        invalidatesTags: ["Tasks"],
-    }),
+    }), 
   }),  
 });
 
-export const { useGetTasksQuery, useUpdateTaskMutation, useDeleteTaskMutation, useCreateTaskMutation, useUpdateTaskContentMutation } = tasksApi;
+export const { 
+  useGetTasksQuery,
+  useGetTaskQuery,
+  useUpdateTaskMutation,
+  useUpdateTaskWorkflowMutation,
+  useDeleteTaskMutation,
+  useCreateTaskMutation,} = tasksApi;
