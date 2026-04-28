@@ -33,7 +33,7 @@ export const tasksApi = createApi({
       providesTags: ["Task"],
     }),
     
-    updateTask: build.mutation<ITask, {taskId: string; body: { title?: string; description?: string };}>({
+    updateTask: build.mutation<ITask, {taskId: string; body: { title?: string; description?: string }}>({
       query: ({ taskId, body }) => ({
         url: `/${taskId}`,
         method: "PUT", 
@@ -60,7 +60,7 @@ export const tasksApi = createApi({
       }),
       invalidatesTags: ["Tasks"],
     }),
-    createTask: build.mutation<ITask, { boardId: string; title: string; description?: string; workflow?: { code: WorkflowCode } }>({
+    createTask: build.mutation<ITask, { boardId: string; title: string; description?: string; workflow?: WorkflowCode }>({
         query: ({ boardId, ...body }) => ({
             url: "/",
             method: "POST",

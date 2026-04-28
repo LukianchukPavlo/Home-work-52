@@ -32,16 +32,14 @@ export const Tasks = () => {
   ];
 
   const getWorkflowCode = (task: ITask): WorkflowCode => {
-    if (!task.workflow || typeof task.workflow !== "object") {
-      return WorkflowCode.TODO;
-    }
+  if (!task.workflow) return WorkflowCode.TODO;
 
-    if (typeof task.workflow === "string") {
-      return task.workflow as WorkflowCode;
-    }
+  if (typeof task.workflow === "string") {
+    return task.workflow as WorkflowCode;
+  }
 
-    return task.workflow.code;
-  };
+  return task.workflow.code;
+};
 
   
 
