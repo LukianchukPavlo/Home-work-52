@@ -18,7 +18,7 @@ export const BoardsLayout = () => {
         boardId,
         title: "New Task",
         description: "Task description",
-        workflow: { code: WorkflowCode.TODO },
+        workflow: WorkflowCode.TODO,
       }).unwrap();
       toast.success("Task created successfully!");
     } catch (err) {

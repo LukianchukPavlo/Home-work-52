@@ -9,7 +9,11 @@ export const tasksApi = createApi({
   reducerPath: apiName,
   baseQuery: fetchBaseQuery({
     baseUrl,
-    credentials: 'include'
+    credentials: 'include',
+    prepareHeaders: (headers) => {
+    console.log('📡 REQUEST HEADERS', headers);
+    return headers;
+  },
   }),
   tagTypes: ["Tasks", "Task"],
   endpoints: (build) => ({
@@ -61,10 +65,10 @@ export const tasksApi = createApi({
       invalidatesTags: ["Tasks"],
     }),
     createTask: build.mutation<ITask, { boardId: string; title: string; description?: string; workflow?: WorkflowCode }>({
-        query: ({ boardId, ...body }) => ({
+        query: ({ boardId, title, description, workflow }) => ({
             url: "/",
             method: "POST",
-            body: { boardId, ...body },
+            body: { boardId, title, description, workflow },
         }),
         invalidatesTags: ["Tasks"],
     }), 

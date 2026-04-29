@@ -9,6 +9,9 @@ export const TaskDetails = () => {
   const { taskId } = useParams();
 
   const { data: task, isLoading } = useGetTaskQuery(taskId!);
+  console.log('📦 TASK:', task);
+  console.log('❌ ERROR:', Error);
+
   const [updateTask] = useUpdateTaskMutation();
 
   const [isEditing, setIsEditing] = useState(false);
@@ -27,10 +30,17 @@ export const TaskDetails = () => {
 
   const handleSave = async () => {
     try {
+      console.log('✏️ UPDATE REQUEST', {
+      taskId: task.id,
+      title,
+      description,
+    });
       await updateTask({
         taskId: task.id,
         body: { title, description },
       }).unwrap();
+
+      console.log('✅ UPDATED');
 
       setIsEditing(false);
     } catch {

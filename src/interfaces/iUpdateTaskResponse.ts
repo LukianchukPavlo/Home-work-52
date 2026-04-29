@@ -9,6 +9,8 @@ export interface IUpdateTaskResponse {
 export interface UpdateTaskPayload {
   taskId: string;
   body: {
-    workflow: { code: WorkflowCode };
+    title?: string;
+    description?: string;
+    workflow?: WorkflowCode; 
   };
 }
