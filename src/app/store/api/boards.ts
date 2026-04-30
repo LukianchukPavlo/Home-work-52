@@ -43,7 +43,7 @@ export const boardsApi = createApi({
         }),
         updateBoard: build.mutation({
             query: ({ id, name, description }) => ({
-            url: `/boards/${id}`,
+            url: `/${id}`,
             method: "PUT",
             body: { name, description },
         }),
