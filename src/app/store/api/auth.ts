@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type { ISignIn, ISignInResponse, ISignUp, ISignUpResponse, IGetMeResponse } from "../../../interfaces";
 
 
-const baseUrl = 'http://localhost:3000/api/v1/auth';
+const baseUrl = 'https://task-manager-npk3.onrender.com/api/v1/auth';
 
 const apiName = "authApi"
 

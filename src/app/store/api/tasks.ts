@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { type IDeleteTaskResponce, type ITask, type WorkflowCode } from "../../../interfaces";
 
-const baseUrl = "http://localhost:3000/api/v1/tasks";
+const baseUrl = "https://task-manager-npk3.onrender.com/api/v1/tasks";
 
 const apiName = 'taskApi'
 
